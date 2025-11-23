@@ -27,7 +27,7 @@ trait HasAttachments
 
     public function getAttachmentDiskName(): string
     {
-        return 'attachments';
+        return config('attachments.disk', 'public');
     }
 
     public function attachments(): MorphMany
@@ -49,7 +49,7 @@ trait HasAttachments
             }
 
             try {
-                $storePath = $file->storeAs($path, $file->getClientOriginalName(), $disk);
+                $storePath = $file->store($path, $disk);
                 if (!$storePath) {
                     throw new Exception("unable to store file {$file->path()} in disk {$disk}");
                 }
@@ -73,8 +73,8 @@ trait HasAttachments
 
     public function addAttachment(UploadedFile $file, $disk = null)
     {
-        $disk = $disk ?: config('attachments.disk');
-        $storePath = $file->storeAs(config('attachments.date_format'), $file->getClientOriginalName(), $disk);
+        if (!$disk) $disk = $this->getAttachmentDiskName();
+        $storePath = $file->store(config('attachments.date_format'),$disk);
 
         return $this->attachments()->create([
             'rel_type' => self::class,
