@@ -1,0 +1,27 @@
+{
+    "name": "novinvision/laravel-attachments",
+    "description": "A laravel package for attach file to any models",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "NovinVision",
+            "email": "novinvision.com@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "NovinVision\\Attachments\\": "src/"
+        }
+    },
+    "require": {
+        "laravel/framework": ">10.0"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "NovinVision\\Attachments\\AttachmentsServiceProvider"
+            ]
+        }
+    }
+}
