@@ -44,7 +44,7 @@ trait HasAttachments
     /**
      * @throws Exception
      */
-    public function addAttachments(array $files, $path = null, $disk = null): int
+    public function addAttachments(array $files, $disk = null): int
     {
         if (!$disk) $disk = $this->getAttachmentDiskName();
 
@@ -54,16 +54,8 @@ trait HasAttachments
                 throw new Exception("file not instanceof UploadedFile");
             }
 
-            try {
-                $storePath = $file->store($path, $disk);
-                if (!$storePath) {
-                    throw new Exception("unable to store file {$file->path()} in disk {$disk}");
-                }
-            }catch (ValueError $exception){
-                throw new Exception("unable to store file path {$path}: {$exception->getMessage()} path:" . print_r($file->path(), true));
-            }
-
-            $attachments[] = [
+            $storePath = $file->store(date(config('attachments.date_format')), $disk);
+            if ($storePath) $attachments[] = [
                 'rel_type' => self::class,
                 'rel_id' => $this->getKey(),
                 'disk' => $disk,
@@ -80,7 +72,8 @@ trait HasAttachments
     public function addAttachment(UploadedFile $file, $disk = null)
     {
         if (!$disk) $disk = $this->getAttachmentDiskName();
-        $storePath = $file->store(config('attachments.date_format'),$disk);
+        $storePath = $file->store(date(config('attachments.date_format')), $disk);
+        if(!$storePath) return false;
 
         return $this->attachments()->create([
             'rel_type' => self::class,
