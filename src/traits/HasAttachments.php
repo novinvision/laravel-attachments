@@ -1,6 +1,6 @@
 <?php
 
-namespace traits;
+namespace NovinVision\Attachments\Traits;
 
 use Exception;
 use Illuminate\Database\Eloquent\Model;
