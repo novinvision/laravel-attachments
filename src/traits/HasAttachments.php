@@ -73,7 +73,7 @@ trait HasAttachments
 
     public function addAttachment(UploadedFile $file, $disk = null)
     {
-        $disk = $disk ? config('attachments.disk') : null;
+        $disk = $disk ?: config('attachments.disk');
         $storePath = $file->storeAs(config('attachments.date_format'), $file->getClientOriginalName(), $disk);
 
         return $this->attachments()->create([
