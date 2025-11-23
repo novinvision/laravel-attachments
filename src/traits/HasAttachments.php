@@ -5,6 +5,7 @@ namespace NovinVision\Attachments\Traits;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use NovinVision\Attachments\Models\Attachment;
@@ -33,6 +34,11 @@ trait HasAttachments
     public function attachments(): MorphMany
     {
         return $this->morphMany(Attachment::class, 'rel');
+    }
+
+    public function attachment(): MorphOne
+    {
+        return $this->morphOne(Attachment::class, 'rel')->latest();
     }
 
     /**
