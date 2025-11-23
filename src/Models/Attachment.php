@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Storage;
  * @property string $path
  * @property string $disk
  * @property Model $rel
+ * @method Attachment create(array $array)
  */
 
 class Attachment extends Model
@@ -30,6 +31,7 @@ class Attachment extends Model
         'orig_name',
         'disk',
         'path',
+        'size',
     ];
 
     protected $hidden = [

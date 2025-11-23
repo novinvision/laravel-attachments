@@ -61,10 +61,29 @@ trait HasAttachments
                 'rel_type' => self::class,
                 'rel_id' => $this->getKey(),
                 'disk' => $disk,
+                'name' => basename($storePath),
+                'orig_name' => $file->getClientOriginalName(),
                 'path' => $storePath,
+                'size' => $file->getSize(),
             ];
         }
 
         return $this->attachments()->insert($attachments);
+    }
+
+    public function addAttachment(UploadedFile $file, $disk = null)
+    {
+        $disk = $disk ? config('attachments.disk') : null;
+        $storePath = $file->storeAs(config('attachments.date_format'), $file->getClientOriginalName(), $disk);
+
+        return $this->attachments()->create([
+            'rel_type' => self::class,
+            'rel_id' => $this->getKey(),
+            'disk' => $disk,
+            'name' => basename($storePath),
+            'orig_name' => $file->getClientOriginalName(),
+            'path' => $storePath,
+            'size' => $file->getSize(),
+        ]);
     }
 }

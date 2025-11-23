@@ -24,6 +24,7 @@ return new class extends Migration
 
             $table->string('disk', 50);
             $table->string('path', 255);
+            $table->bigInteger('size')->nullable();
 
             $table->timestamps();
         });
