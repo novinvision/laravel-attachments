@@ -43,6 +43,7 @@ trait HasAttachments
 
     /**
      * @throws Exception
+     * @property UploadedFile[] $files
      */
     public function addAttachments(array $files, $disk = null): int
     {
@@ -54,15 +55,15 @@ trait HasAttachments
                 throw new Exception("file not instanceof UploadedFile");
             }
 
-            $storePath = $file->store(date(config('attachments.date_format')), $disk);
+            $storePath = $file->store($this->attachmentsDiskBasePath(), $disk);
             if ($storePath) $attachments[] = [
                 'rel_type' => self::class,
                 'rel_id' => $this->getKey(),
                 'disk' => $disk,
-                'name' => basename($storePath),
                 'orig_name' => $file->getClientOriginalName(),
                 'path' => $storePath,
                 'size' => $file->getSize(),
+                'mime_type' => $file->getMimeType(),
             ];
         }
 
@@ -72,17 +73,23 @@ trait HasAttachments
     public function addAttachment(UploadedFile $file, $disk = null)
     {
         if (!$disk) $disk = $this->getAttachmentDiskName();
-        $storePath = $file->store(date(config('attachments.date_format')), $disk);
-        if(!$storePath) return false;
+        $storePath = $file->store($this->attachmentsDiskBasePath(), $disk);
+        if (!$storePath) return false;
 
         return $this->attachments()->create([
             'rel_type' => self::class,
             'rel_id' => $this->getKey(),
             'disk' => $disk,
-            'name' => basename($storePath),
             'orig_name' => $file->getClientOriginalName(),
             'path' => $storePath,
             'size' => $file->getSize(),
+            'mime_type' => $file->getMimeType(),
         ]);
+    }
+
+    protected function attachmentsDiskBasePath(): ?string
+    {
+        $dateFormat = config('attachments.date_format');
+        return $dateFormat ? date($dateFormat) : null;
     }
 }

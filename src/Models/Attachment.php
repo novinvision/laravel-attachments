@@ -27,11 +27,11 @@ class Attachment extends Model
     protected $fillable = [
         'rel_type',
         'rel_id',
-        'name',
         'orig_name',
         'disk',
         'path',
         'size',
+        'mime_type',
     ];
 
     protected $hidden = [
