@@ -15,7 +15,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('attachments', function (Blueprint $table) {
-            $table->string('mime_type')->nullable()->after('size');
+            $table->string('mime_type', 90)->nullable()->after('size');
         });
     }
 
