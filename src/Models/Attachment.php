@@ -30,7 +30,7 @@ class Attachment extends Model
     protected $hidden = [
         'rel_type',
         'rel_id',
-        'path',
+        'disk',
     ];
 
     protected static function booted()
