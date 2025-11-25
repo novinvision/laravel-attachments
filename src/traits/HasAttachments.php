@@ -12,7 +12,8 @@ use NovinVision\Attachments\Models\Attachment;
 use ValueError;
 
 /**
- *  * @property Attachment[]|Collection $attachments
+ * @property Attachment[]|Collection $attachments
+ * @property null|Attachment $attachment
  */
 trait HasAttachments
 {
