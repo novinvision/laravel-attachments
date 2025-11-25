@@ -7,10 +7,13 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Facades\Storage;
 
 /**
- * @property ?string $name
+ * @property ?string $rel_type
+ * @property ?string $rel_id
  * @property ?string $orig_name
  * @property string $path
  * @property string $disk
+ * @property string $mime_type
+ * @property integer $size
  * @property Model $rel
  * @method Attachment create(array $array)
  */
