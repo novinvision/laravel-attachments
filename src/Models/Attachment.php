@@ -17,13 +17,6 @@ use Illuminate\Support\Facades\Storage;
 
 class Attachment extends Model
 {
-    public $timestamps = false;
-
-    protected $appends = [
-        'mime_type',
-        'url',
-    ];
-
     protected $fillable = [
         'rel_type',
         'rel_id',
@@ -37,6 +30,7 @@ class Attachment extends Model
     protected $hidden = [
         'rel_type',
         'rel_id',
+        'path',
     ];
 
     protected static function booted()
@@ -49,16 +43,6 @@ class Attachment extends Model
     public function rel(): MorphTo
     {
         return $this->morphTo('rel');
-    }
-
-    public function mimeType(): bool|string
-    {
-        return ($this->path && $this->disk) ? Storage::disk($this->disk)->mimeType($this->path) : '';
-    }
-
-    public function getMimeTypeAttribute(): string
-    {
-        return $this->mimeType();
     }
 
     public function download(): \Symfony\Component\HttpFoundation\StreamedResponse
